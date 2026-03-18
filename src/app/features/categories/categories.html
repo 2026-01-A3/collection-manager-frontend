@@ -1,0 +1,38 @@
+<section class="category-page">
+	<h1>Gerenciamento de Categorias</h1>
+
+	<form (ngSubmit)="addCategory()" class="category-form">
+		<input type="text" [(ngModel)]="newCategoryName" name="categoryName" placeholder="Nova categoria"
+			autocomplete="off" [disabled]="isLoading()" />
+		<button type="submit" [disabled]="isLoading()">Adicionar</button>
+	</form>
+
+	@if (errorMessage()) {
+	<p class="error">{{ errorMessage() }}</p>
+	}
+
+	@if (isLoading()) {
+	<p>Carregando categorias...</p>
+	}
+
+	@if (!isLoading() && categories().length > 0) {
+	<table class="category-table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nome</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let c of categories()">
+				<td>{{ c.id }}</td>
+				<td>{{ c.name }}</td>
+			</tr>
+		</tbody>
+	</table>
+	}
+
+	@if (!isLoading() && categories().length === 0) {
+	<p>Nenhuma categoria cadastrada.</p>
+	}
+</section>
