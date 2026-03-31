@@ -1,6 +1,6 @@
 ﻿<div class="auth-container">
   <div class="auth-card">
-    <h2>Criar Conta</h2>
+    <h2>Registrar Novo Usuário</h2>
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
       <div class="form-group">
         <label for="name">Nome</label>
@@ -11,7 +11,7 @@
           [(ngModel)]="userData.name"
           required
           #name="ngModel"
-          placeholder="Seu nome completo"
+          placeholder="Nome completo do usuário"
         >
       </div>
       <div class="form-group">
@@ -23,7 +23,7 @@
           [(ngModel)]="userData.email"
           required
           #email="ngModel"
-          placeholder="seu@email.com"
+          placeholder="email@exemplo.com"
         >
       </div>
       <div class="form-group">
@@ -36,19 +36,36 @@
           required
           minlength="6"
           #password="ngModel"
-          placeholder="Escolha uma senha"
+          placeholder="Defina uma senha"
         >
       </div>
 
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
+      <div class="form-group">
+        <label for="role">Função (Role)</label>
+        <select
+          id="role"
+          name="role"
+          [(ngModel)]="userData.role"
+          required
+          #role="ngModel"
+        >
+          <option value="USER">Usuário</option>
+          <option value="ADMIN">Admin</option>
+        </select>
       </div>
 
-      <button type="submit" [disabled]="!registerForm.form.valid">Registrar</button>
-    </form>
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
 
-    <div class="auth-footer">
-      Já possui uma conta? <a routerLink="/login">Faça Login</a>
-    </div>
+      @if (successMessage) {
+        <div class="success-message">
+          {{ successMessage }}
+        </div>
+      }
+      <button type="submit" [disabled]="!registerForm.form.valid">Registrar Usuário</button>
+    </form>
   </div>
 </div>

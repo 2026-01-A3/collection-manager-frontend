@@ -20,6 +20,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 401) {
         authService.logout();
       }
+      if (error.status === 403) {
+        alert('Você não tem permissão para realizar esta ação.');
+      }
       return throwError(() => error);
     })
   );
