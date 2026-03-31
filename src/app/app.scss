@@ -1,0 +1,64 @@
+.app-shell {
+  font-family: Arial, sans-serif;
+
+  header {
+    background-color: #333;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+
+      a {
+        color: white;
+        text-decoration: none;
+        padding-bottom: 2px;
+
+        &.active {
+          border-bottom: 2px solid white;
+        }
+      }
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: #ccc;
+
+    .btn-logout {
+      background-color: transparent;
+      border: 1px solid #ccc;
+      color: #ccc;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+
+      &:hover {
+        background-color: #f44336;
+        border-color: #f44336;
+        color: white;
+      }
+    }
+  }
+
+  .page-content {
+    padding: 2rem;
+    background-color: #f4f4f4;
+    min-height: calc(100vh - 80px);
+  }
+}

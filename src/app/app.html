@@ -1,8 +1,19 @@
 <main class="app-shell">
   <header>
-    <h1>Collection Manager</h1>
+    <h1>{{ title() }}</h1>
     <nav>
-      <a routerLink="/categories" routerLinkActive="active">Categorias</a>
+      @if (currentUser()) {
+        <a routerLink="/categories" routerLinkActive="active">Categorias</a>
+        @if (currentUser()?.role === 'ADMIN') {
+          <a routerLink="/register" routerLinkActive="active">Registrar Usuário</a>
+        }
+        <div class="user-info">
+          <span>Olá, {{ currentUser()?.name }}</span>
+          <button (click)="logout()" class="btn-logout">Sair</button>
+        </div>
+      } @else {
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+      }
     </nav>
   </header>
 
