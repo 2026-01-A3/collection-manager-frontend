@@ -32,8 +32,8 @@
 
   &:focus {
     outline: none;
-    border-color: #0070f3;
-    box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
+    border-color: #333;
+    box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1);
   }
 }
 
@@ -43,13 +43,13 @@
   font-weight: 600;
   border: none;
   border-radius: 8px;
-  background: #0070f3;
+  background: #333;
   color: #fff;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover:not(:disabled) {
-    background-color: #0051cc;
+    background-color: #555;
     transform: translateY(-1px);
   }
 
