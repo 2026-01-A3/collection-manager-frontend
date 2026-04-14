@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 import { Category, CategoryService } from '../../services/category';
 import { CategoryEditModal } from './category-edit-modal';
+import { ConfirmationService } from '../../services/confirmation.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   standalone: true,
@@ -16,26 +18,28 @@ export class CategoryList {
   categories = signal<Category[]>([]);
   newCategoryName = signal('');
   isLoading = signal(false);
-  errorMessage = signal('');
   showEditModal = signal(false);
   editingCategory = signal<Category | null>(null);
+  openDropdownId = signal<number | null>(null);
 
-  constructor(private categoryService: CategoryService) {
+  constructor(
+    private categoryService: CategoryService,
+    private confirmationService: ConfirmationService,
+    private alertService: AlertService
+  ) {
     this.loadCategories();
   }
 
   loadCategories(): void {
     this.isLoading.set(true);
-    this.errorMessage.set('');
 
     this.categoryService.getCategories().subscribe({
       next: (list) => {
         this.categories.set(list);
         this.isLoading.set(false);
       },
-      error: (error) => {
-        this.errorMessage.set('Erro ao carregar categorias.');
-        console.error(error);
+      error: () => {
+        this.alertService.error('Erro ao carregar categorias.');
         this.isLoading.set(false);
       },
     });
@@ -44,12 +48,11 @@ export class CategoryList {
   addCategory(): void {
     const name = this.newCategoryName().trim();
     if (!name) {
-      this.errorMessage.set('Nome da categoria não pode ser vazio.');
+      this.alertService.error('Nome da categoria não pode ser vazio.');
       return;
     }
 
     this.isLoading.set(true);
-    this.errorMessage.set('');
 
     this.categoryService.addCategory({ name }).subscribe({
       next: (saved) => {
@@ -57,17 +60,25 @@ export class CategoryList {
         this.newCategoryName.set('');
         this.isLoading.set(false);
       },
-      error: (error) => {
-        this.errorMessage.set('Erro ao adicionar categoria.');
-        console.error(error);
+      error: () => {
+        this.alertService.error('Erro ao adicionar categoria.');
         this.isLoading.set(false);
       },
     });
   }
 
   openEditModal(category: Category): void {
+    this.toggleDropdown(null);
     this.editingCategory.set(category);
     this.showEditModal.set(true);
+  }
+
+  toggleDropdown(id: number | null): void {
+    if (this.openDropdownId() === id) {
+      this.openDropdownId.set(null);
+    } else {
+      this.openDropdownId.set(id);
+    }
   }
 
   closeEditModal(): void {
@@ -79,25 +90,25 @@ export class CategoryList {
     this.categories.update((current) =>
       current.map((c) => (c.id === updated.id ? updated : c))
     );
-    this.errorMessage.set('');
     this.closeEditModal();
   }
 
-  deleteCategory(id: number): void {
-    const confirmed = confirm('Tem certeza que deseja deletar esta categoria?');
+  async deleteCategory(id: number): Promise<void> {
+    this.toggleDropdown(null);
+    const confirmed = await this.confirmationService.confirm(
+      'Tem certeza que deseja deletar esta categoria?'
+    );
     if (!confirmed) return;
 
     this.isLoading.set(true);
-    this.errorMessage.set('');
 
     this.categoryService.deleteCategory(id).subscribe({
       next: () => {
         this.categories.update((current) => current.filter((c) => c.id !== id));
         this.isLoading.set(false);
       },
-      error: (error) => {
-        this.errorMessage.set('Erro ao deletar categoria.');
-        console.error(error);
+      error: () => {
+        this.alertService.error('Erro ao deletar categoria.');
         this.isLoading.set(false);
       },
     });

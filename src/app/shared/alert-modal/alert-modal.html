@@ -1,0 +1,18 @@
+﻿@if (alertService.isOpen()) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="icon-container">
+        <span class="close-icon">&times;</span>
+      </div>
+
+      <h2 class="modal-title">{{ alertService.isOpen()?.title }}</h2>
+      <p class="modal-message">{{ alertService.isOpen()?.message }}</p>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" (click)="onClose()">
+          {{ alertService.isOpen()?.buttonText }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

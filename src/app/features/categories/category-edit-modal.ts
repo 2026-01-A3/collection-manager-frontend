@@ -2,6 +2,7 @@ import { Component, signal, EventEmitter, Output, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Category, CategoryService } from '../../services/category';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   standalone: true,
@@ -24,25 +25,26 @@ export class CategoryEditModal {
   editingCategory = signal<Category | null>(null);
   editName = signal('');
   isLoading = signal(false);
-  errorMessage = signal('');
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(
+    private categoryService: CategoryService,
+    private alertService: AlertService
+  ) {}
 
   onSave(): void {
     const name = this.editName().trim();
     if (!name) {
-      this.errorMessage.set('Nome da categoria não pode ser vazio.');
+      this.alertService.error('Nome da categoria não pode ser vazio.');
       return;
     }
 
     const category = this.editingCategory();
     if (!category || !category.id) {
-      this.errorMessage.set('Erro: categoria inválida.');
+      this.alertService.error('Erro: categoria inválida.');
       return;
     }
 
     this.isLoading.set(true);
-    this.errorMessage.set('');
 
     this.categoryService.updateCategory(category.id, { name }).subscribe({
       next: (updated) => {
@@ -54,8 +56,7 @@ export class CategoryEditModal {
         this.isLoading.set(false);
         const errorMsg =
           error.error?.message || error.statusText || 'Erro ao atualizar categoria.';
-        this.errorMessage.set(errorMsg);
-        console.error('Erro ao atualizar categoria:', error);
+        this.alertService.error(errorMsg);
       },
     });
   }
@@ -63,7 +64,6 @@ export class CategoryEditModal {
   onClose(): void {
     this.editingCategory.set(null);
     this.editName.set('');
-    this.errorMessage.set('');
     this.close.emit();
   }
 }

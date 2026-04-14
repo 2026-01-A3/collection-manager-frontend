@@ -47,18 +47,12 @@
           name="role"
           [(ngModel)]="userData.role"
           required
-          #role="ngModel"
+          class="custom-select"
         >
           <option value="USER">Usuário</option>
           <option value="ADMIN">Admin</option>
         </select>
       </div>
-
-      @if (errorMessage) {
-        <div class="error-message">
-          {{ errorMessage }}
-        </div>
-      }
 
       @if (successMessage) {
         <div class="success-message">
