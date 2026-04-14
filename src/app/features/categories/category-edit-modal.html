@@ -1,0 +1,46 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Editar Categoria</h2>
+      <button type="button" class="close-btn" (click)="onClose()" [disabled]="isLoading()">
+        ✕
+      </button>
+    </div>
+
+    <div class="modal-body">
+      @if (errorMessage()) {
+      <p class="error-message">{{ errorMessage() }}</p>
+      }
+
+      <form (ngSubmit)="onSave()" class="edit-form">
+        <div class="form-group">
+          <label for="categoryName">Nome da Categoria</label>
+          <input
+            id="categoryName"
+            type="text"
+            [(ngModel)]="editName"
+            name="categoryName"
+            placeholder="Ex: Filmes, Livros, Músicas"
+            [disabled]="isLoading()"
+            required
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="onClose()" [disabled]="isLoading()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-save" [disabled]="isLoading()">
+            @if (isLoading()) {
+            <span>Salvando...</span>
+            } @else {
+            <span>Salvar</span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

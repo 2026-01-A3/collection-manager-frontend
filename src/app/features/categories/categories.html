@@ -21,12 +21,23 @@
 			<tr>
 				<th>ID</th>
 				<th>Nome</th>
+				<th>Ações</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr *ngFor="let c of categories()">
 				<td>{{ c.id }}</td>
 				<td>{{ c.name }}</td>
+				<td class="actions-column">
+					<button type="button" class="btn-action btn-edit" (click)="openEditModal(c)"
+						[disabled]="isLoading()" title="Editar categoria">
+						✏️
+					</button>
+					<button type="button" class="btn-action btn-delete" (click)="deleteCategory(c.id!)"
+						[disabled]="isLoading()" title="Deletar categoria">
+						🗑️
+					</button>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -34,5 +45,11 @@
 
 	@if (!isLoading() && categories().length === 0) {
 	<p>Nenhuma categoria cadastrada.</p>
+	}
+
+	@if (showEditModal()) {
+	<app-category-edit-modal [category]="editingCategory()" (close)="closeEditModal()"
+		(save)="onCategorySaved($event)">
+	</app-category-edit-modal>
 	}
 </section>
