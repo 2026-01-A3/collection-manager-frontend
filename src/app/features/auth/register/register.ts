@@ -10,7 +10,7 @@ import { AlertService } from '../../../services/alert.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './register.html',
-  styleUrls: ['../login/login.scss']
+  styleUrls: ['./register.scss']
 })
 export class RegisterComponent {
   userData: RegisterRequest = {
