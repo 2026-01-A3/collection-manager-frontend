@@ -8,10 +8,6 @@
     </div>
 
     <div class="modal-body">
-      @if (errorMessage()) {
-      <p class="error-message">{{ errorMessage() }}</p>
-      }
-
       <form (ngSubmit)="onSave()" class="edit-form">
         <div class="form-group">
           <label for="categoryName">Nome da Categoria</label>

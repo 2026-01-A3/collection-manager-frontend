@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { RegisterRequest } from '../../../models/auth.model';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +24,8 @@ export class RegisterComponent {
 
   constructor(
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private alertService: AlertService
   ) {}
 
   onSubmit() {
@@ -42,7 +44,8 @@ export class RegisterComponent {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || err.error?.error || 'Erro ao realizar registro';
+        const message = err.error?.message || err.error?.error || 'Erro ao realizar registro';
+        this.alertService.error(message);
         this.cdr.detectChanges();
       }
     });

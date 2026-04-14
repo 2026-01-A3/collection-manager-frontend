@@ -7,40 +7,40 @@
 		<button type="submit" [disabled]="isLoading()">Adicionar</button>
 	</form>
 
-	@if (errorMessage()) {
-	<p class="error">{{ errorMessage() }}</p>
-	}
-
 	@if (isLoading()) {
 	<p>Carregando categorias...</p>
 	}
 
 	@if (!isLoading() && categories().length > 0) {
-	<table class="category-table">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Nome</th>
-				<th>Ações</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let c of categories()">
-				<td>{{ c.id }}</td>
-				<td>{{ c.name }}</td>
-				<td class="actions-column">
-					<button type="button" class="btn-action btn-edit" (click)="openEditModal(c)"
-						[disabled]="isLoading()" title="Editar categoria">
-						✏️
-					</button>
-					<button type="button" class="btn-action btn-delete" (click)="deleteCategory(c.id!)"
-						[disabled]="isLoading()" title="Deletar categoria">
-						🗑️
-					</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="table-container">
+		<table class="category-table">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th class="text-right">Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let c of categories()">
+					<td>{{ c.name }}</td>
+					<td class="text-right">
+						<div class="dropdown">
+							<button type="button" class="btn-dropdown" (click)="toggleDropdown(c.id!)"
+								[disabled]="isLoading()">
+								Ações ▾
+							</button>
+							@if (openDropdownId() === c.id) {
+							<div class="dropdown-menu">
+								<button type="button" (click)="openEditModal(c)">Editar</button>
+								<button type="button" class="delete" (click)="deleteCategory(c.id!)">Excluir</button>
+							</div>
+							}
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	}
 
 	@if (!isLoading() && categories().length === 0) {

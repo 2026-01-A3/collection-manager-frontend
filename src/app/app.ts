@@ -3,10 +3,13 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
 
+import { ConfirmationModal } from './shared/confirmation-modal/confirmation-modal';
+import { AlertModal } from './shared/alert-modal/alert-modal';
+
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, ConfirmationModal, AlertModal],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

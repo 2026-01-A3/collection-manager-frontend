@@ -1,0 +1,20 @@
+﻿@if (confirmationService.isOpen()) {
+<div class="modal-overlay" (click)="cancel()">
+	<div class="modal-content" (click)="$event.stopPropagation()">
+		<div class="modal-header">
+			<h2>{{ confirmationService.isOpen()?.title }}</h2>
+		</div>
+		<div class="modal-body">
+			<p>{{ confirmationService.isOpen()?.message }}</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn-cancel" (click)="cancel()">
+				{{ confirmationService.isOpen()?.cancelText }}
+			</button>
+			<button type="button" class="btn-confirm" (click)="confirm()">
+				{{ confirmationService.isOpen()?.confirmText }}
+			</button>
+		</div>
+	</div>
+</div>
+}

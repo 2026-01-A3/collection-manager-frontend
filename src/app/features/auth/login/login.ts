@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,11 @@ export class LoginComponent {
   };
   errorMessage = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private alertService: AlertService
+  ) {}
 
   async onSubmit() {
     this.errorMessage = '';
@@ -27,7 +32,8 @@ export class LoginComponent {
         await this.router.navigate(['/categories']);
       },
       error: (err) => {
-        this.errorMessage = err.error?.error || 'Erro ao realizar login';
+        const message = err.error?.error || 'Erro ao realizar login';
+        this.alertService.error(message);
       }
     });
   }
