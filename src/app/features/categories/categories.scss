@@ -73,15 +73,10 @@
   border-collapse: collapse;
 }
 
-.category-table th:first-child,
-.category-table td:first-child {
-  width: 100%;
-}
-
 .category-table th,
 .category-table td {
   padding: 16px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid #eee;
   white-space: nowrap;
 }
@@ -109,6 +104,7 @@
 
 .text-right {
   text-align: right;
+  width: 1%;
 }
 
 /* Dropdown Styles */

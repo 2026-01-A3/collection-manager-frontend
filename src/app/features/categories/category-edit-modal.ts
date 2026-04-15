@@ -1,7 +1,8 @@
 import { Component, signal, EventEmitter, Output, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Category, CategoryService } from '../../services/category';
+import { CategoryService } from '../../services/category';
+import { Category } from '../../models/category.model';
 import { AlertService } from '../../services/alert.service';
 
 @Component({

@@ -2,7 +2,8 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { Category, CategoryService } from '../../services/category';
+import { CategoryService } from '../../services/category';
+import { Category } from '../../models/category.model';
 import { CategoryEditModal } from './category-edit-modal';
 import { ConfirmationService } from '../../services/confirmation.service';
 import { AlertService } from '../../services/alert.service';

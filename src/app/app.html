@@ -4,6 +4,7 @@
     <nav>
       @if (currentUser()) {
         <a routerLink="/categories" routerLinkActive="active">Categorias</a>
+        <a routerLink="/collections" routerLinkActive="active">Coleções</a>
         @if (currentUser()?.role === 'ADMIN') {
           <a routerLink="/register" routerLinkActive="active">Registrar Usuário</a>
         }
