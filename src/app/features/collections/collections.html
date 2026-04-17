@@ -22,9 +22,9 @@
       <tbody>
         @for (collection of collections(); track collection.id) {
           <tr>
-            <td class="image-cell">
-              @if (collection.image_url) {
-                <img [src]="collection.image_url" alt="Sample" class="sample-img">
+            <td>
+              @if (imageSrc(collection.binary_object); as src) {
+                <img [src]="src" [alt]="collection.binary_object?.filename ?? 'Imagem'" class="sample-img">
               } @else {
                 <div class="no-img">Sem imagem</div>
               }

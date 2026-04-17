@@ -1,4 +1,4 @@
-﻿<div class="modal-overlay" (click)="onClose.emit()">
+<div class="modal-overlay" (click)="onClose.emit()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <h2>{{ title() }}</h2>
@@ -23,14 +23,22 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="col-image">URL da Imagem</label>
+        <label for="col-image">Imagem</label>
         <input
-          type="text"
+          type="file"
           id="col-image"
-          [(ngModel)]="formData().image_url"
+          accept="image/*"
+          (change)="onFileSelected($event)"
           [disabled]="isLoading()"
-          placeholder="Ex: https://..."
         />
+        @if (previewUrl()) {
+          <div class="image-preview">
+            <img [src]="previewUrl()" alt="Prévia" />
+          </div>
+        }
+        @if (!newFile() && existingFilename()) {
+          <small class="file-hint">Atual: {{ existingFilename() }}</small>
+        }
       </div>
     </div>
     <div class="modal-footer">

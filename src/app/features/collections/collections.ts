@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { Collection } from '../../models/collection.model';
+import { BinaryObject, Collection } from '../../models/collection.model';
 import { Category } from '../../models/category.model';
 import { CollectionService } from '../../services/collection.service';
 import { CategoryService } from '../../services/category';
@@ -70,6 +70,13 @@ export class CollectionList {
     this.toggleDropdown(null);
     this.editingCollection.set(collection);
     this.showModal.set(true);
+  }
+
+  imageSrc(bin: BinaryObject | null | undefined): string | null {
+    if (!bin) return null;
+    const ext = bin.extension.toLowerCase();
+    const mime = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+    return `data:${mime};base64,${bin.base64}`;
   }
 
   toggleDropdown(id: number | null): void {
