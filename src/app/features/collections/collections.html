@@ -12,45 +12,55 @@
   <div class="table-container">
     <table>
       <thead>
-        <tr>
-          <th>Imagem</th>
-          <th>Nome</th>
-          <th>Categoria</th>
-          <th class="actions-cell">Ações</th>
-        </tr>
+      <tr>
+        <th>Imagem</th>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th class="actions-cell">Ações</th>
+      </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let collection of collections()">
-          <td class="image-cell">
-            <img *ngIf="collection.image_url" [src]="collection.image_url" alt="Sample" class="sample-img">
-            <div *ngIf="!collection.image_url" class="no-img">Sem imagem</div>
-          </td>
-          <td>{{ collection.name }}</td>
-          <td>{{ collection.category?.name || 'Sem categoria' }}</td>
-          <td class="actions-cell">
-            <div class="dropdown">
-              <button class="btn-dropdown" (click)="toggleDropdown(collection.id)">
-                Ações ▾
-              </button>
-              <div class="dropdown-menu" [class.show]="openDropdownId() === collection.id">
-                <button (click)="openEditModal(collection)">Editar</button>
-                <button (click)="deleteCollection(collection.id)" class="delete-btn">Deletar</button>
+        @for (collection of collections(); track collection.id) {
+          <tr>
+            <td class="image-cell">
+              @if (collection.image_url) {
+                <img [src]="collection.image_url" alt="Sample" class="sample-img">
+              } @else {
+                <div class="no-img">Sem imagem</div>
+              }
+            </td>
+            <td>{{ collection.name }}</td>
+            <td>{{ collection.category?.name || 'Sem categoria' }}</td>
+            <td class="actions-cell">
+              <div class="dropdown">
+                <button class="btn-dropdown" (click)="toggleDropdown(collection.id)">
+                  Ações ▾
+                </button>
+                @if (openDropdownId() === collection.id) {
+                  <div class="dropdown-menu">
+                    <button (click)="openEditModal(collection)">Editar</button>
+                    <button (click)="deleteCollection(collection.id)" class="delete">Deletar</button>
+                  </div>
+                }
               </div>
-            </div>
-          </td>
-        </tr>
-        <tr *ngIf="collections().length === 0 && !isLoading()">
-          <td colspan="4" class="empty-state">Nenhuma coleção encontrada.</td>
-        </tr>
+            </td>
+          </tr>
+        }
+        @if (collections().length === 0 && !isLoading()) {
+          <tr>
+            <td colspan="4" class="empty-state">Nenhuma coleção encontrada.</td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>
 </div>
 
-<app-collection-modal
-  *ngIf="showModal()"
-  [collection]="editingCollection()"
-  [categories]="categories()"
-  (onClose)="closeModal()"
-  (onSave)="onCollectionSaved($event)"
-></app-collection-modal>
+@if (showModal()) {
+  <app-collection-modal
+    [collection]="editingCollection()"
+    [categories]="categories()"
+    (onClose)="closeModal()"
+    (onSave)="onCollectionSaved($event)"
+  ></app-collection-modal>
+}

@@ -4,22 +4,21 @@ import { FormsModule } from '@angular/forms';
 
 import { CategoryService } from '../../services/category';
 import { Category } from '../../models/category.model';
-import { CategoryEditModal } from './category-edit-modal';
+import { CategoryModal } from './category-modal';
 import { ConfirmationService } from '../../services/confirmation.service';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
   standalone: true,
   selector: 'app-category-list',
-  imports: [CommonModule, FormsModule, CategoryEditModal],
+  imports: [CommonModule, FormsModule, CategoryModal],
   templateUrl: './categories.html',
   styleUrl: './categories.scss',
 })
 export class CategoryList {
   categories = signal<Category[]>([]);
-  newCategoryName = signal('');
   isLoading = signal(false);
-  showEditModal = signal(false);
+  showModal = signal(false);
   editingCategory = signal<Category | null>(null);
   openDropdownId = signal<number | null>(null);
 
@@ -46,32 +45,15 @@ export class CategoryList {
     });
   }
 
-  addCategory(): void {
-    const name = this.newCategoryName().trim();
-    if (!name) {
-      this.alertService.error('Nome da categoria não pode ser vazio.');
-      return;
-    }
-
-    this.isLoading.set(true);
-
-    this.categoryService.addCategory({ name }).subscribe({
-      next: (saved) => {
-        this.categories.update((current) => [...current, saved]);
-        this.newCategoryName.set('');
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.alertService.error('Erro ao adicionar categoria.');
-        this.isLoading.set(false);
-      },
-    });
+  openAddModal(): void {
+    this.editingCategory.set(null);
+    this.showModal.set(true);
   }
 
   openEditModal(category: Category): void {
     this.toggleDropdown(null);
     this.editingCategory.set(category);
-    this.showEditModal.set(true);
+    this.showModal.set(true);
   }
 
   toggleDropdown(id: number | null): void {
@@ -82,16 +64,21 @@ export class CategoryList {
     }
   }
 
-  closeEditModal(): void {
-    this.showEditModal.set(false);
+  closeModal(): void {
+    this.showModal.set(false);
     this.editingCategory.set(null);
   }
 
-  onCategorySaved(updated: Category): void {
-    this.categories.update((current) =>
-      current.map((c) => (c.id === updated.id ? updated : c))
-    );
-    this.closeEditModal();
+  onCategorySaved(saved: Category): void {
+    const isEdit = this.editingCategory() !== null;
+    if (isEdit) {
+      this.categories.update((current) =>
+        current.map((c) => (c.id === saved.id ? saved : c))
+      );
+    } else {
+      this.categories.update((current) => [...current, saved]);
+    }
+    this.closeModal();
   }
 
   async deleteCategory(id: number): Promise<void> {

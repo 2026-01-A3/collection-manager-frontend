@@ -1,12 +1,10 @@
-/* .modal-overlay, .modal-content base, animações — ver styles.scss */
+/* .modal-overlay, .modal-content base e animações vêm de styles.scss */
 
 .modal-overlay {
-  /* Override: este modal usa um véu mais claro */
   background: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-  /* Overrides específicos */
   max-width: 500px;
   overflow: hidden;
 }
@@ -53,7 +51,7 @@
     font-weight: 500;
     color: #374151;
   }
-  input, select {
+  input {
     padding: 10px 12px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
