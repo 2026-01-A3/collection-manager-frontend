@@ -1,55 +1,55 @@
-<section class="category-page">
-	<h1>Gerenciamento de Categorias</h1>
+<div class="container">
+  <div class="header">
+    <div class="title-group">
+      <h1>Categorias</h1>
+      <p>Gerencie as categorias das suas coleções.</p>
+    </div>
+    <button class="btn-primary" (click)="openAddModal()">
+      Nova Categoria
+    </button>
+  </div>
 
-	<form (ngSubmit)="addCategory()" class="category-form">
-		<input type="text" [(ngModel)]="newCategoryName" name="categoryName" placeholder="Nova categoria"
-			autocomplete="off" [disabled]="isLoading()" />
-		<button type="submit" [disabled]="isLoading()">Adicionar</button>
-	</form>
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>Nome</th>
+        <th class="actions-cell">Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (category of categories(); track category.id) {
+          <tr>
+            <td>{{ category.name }}</td>
+            <td class="actions-cell">
+              <div class="dropdown">
+                <button class="btn-dropdown" (click)="toggleDropdown(category.id!)">
+                  Ações ▾
+                </button>
+                @if (openDropdownId() === category.id) {
+                  <div class="dropdown-menu">
+                    <button (click)="openEditModal(category)">Editar</button>
+                    <button (click)="deleteCategory(category.id!)" class="delete">Excluir</button>
+                  </div>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+        @if (categories().length === 0 && !isLoading()) {
+          <tr>
+            <td colspan="2" class="empty-state">Nenhuma categoria encontrada.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
 
-	@if (isLoading()) {
-	<p>Carregando categorias...</p>
-	}
-
-	@if (!isLoading() && categories().length > 0) {
-	<div class="table-container">
-		<table class="category-table">
-			<thead>
-				<tr>
-					<th>Nome</th>
-					<th class="text-right">Ações</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let c of categories()">
-					<td>{{ c.name }}</td>
-					<td class="text-right">
-						<div class="dropdown">
-							<button type="button" class="btn-dropdown" (click)="toggleDropdown(c.id!)"
-								[disabled]="isLoading()">
-								Ações ▾
-							</button>
-							@if (openDropdownId() === c.id) {
-							<div class="dropdown-menu">
-								<button type="button" (click)="openEditModal(c)">Editar</button>
-								<button type="button" class="delete" (click)="deleteCategory(c.id!)">Excluir</button>
-							</div>
-							}
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	}
-
-	@if (!isLoading() && categories().length === 0) {
-	<p>Nenhuma categoria cadastrada.</p>
-	}
-
-	@if (showEditModal()) {
-	<app-category-edit-modal [category]="editingCategory()" (close)="closeEditModal()"
-		(save)="onCategorySaved($event)">
-	</app-category-edit-modal>
-	}
-</section>
+@if (showModal()) {
+  <app-category-modal
+    [category]="editingCategory()"
+    (onClose)="closeModal()"
+    (onSave)="onCategorySaved($event)"
+  ></app-category-modal>
+}

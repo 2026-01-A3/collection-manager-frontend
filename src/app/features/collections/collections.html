@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="header">
+    <div class="title-group">
+      <h1>Coleções</h1>
+      <p>Gerencie suas coleções e vincule-as a categorias.</p>
+    </div>
+    <button class="btn-primary" (click)="openAddModal()">
+      Nova Coleção
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>Imagem</th>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th class="actions-cell">Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (collection of collections(); track collection.id) {
+          <tr>
+            <td>
+              @if (imageSrc(collection.binary_object); as src) {
+                <img [src]="src" [alt]="collection.binary_object?.filename ?? 'Imagem'" class="sample-img">
+              } @else {
+                <div class="no-img">Sem imagem</div>
+              }
+            </td>
+            <td>{{ collection.name }}</td>
+            <td>{{ collection.category?.name || 'Sem categoria' }}</td>
+            <td class="actions-cell">
+              <div class="dropdown">
+                <button class="btn-dropdown" (click)="toggleDropdown(collection.id)">
+                  Ações ▾
+                </button>
+                @if (openDropdownId() === collection.id) {
+                  <div class="dropdown-menu">
+                    <button (click)="openEditModal(collection)">Editar</button>
+                    <button (click)="deleteCollection(collection.id)" class="delete">Deletar</button>
+                  </div>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+        @if (collections().length === 0 && !isLoading()) {
+          <tr>
+            <td colspan="4" class="empty-state">Nenhuma coleção encontrada.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (showModal()) {
+  <app-collection-modal
+    [collection]="editingCollection()"
+    [categories]="categories()"
+    (onClose)="closeModal()"
+    (onSave)="onCollectionSaved($event)"
+  ></app-collection-modal>
+}

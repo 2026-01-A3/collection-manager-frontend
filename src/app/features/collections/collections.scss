@@ -1,7 +1,7 @@
 /* .dropdown, .btn-dropdown, .dropdown-menu (base) vêm de styles.scss */
 
 .container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 40px auto;
   padding: 32px;
   background: #ffffff;
@@ -14,6 +14,29 @@
 .table-container {
   border: 1px solid #eee;
   border-radius: 8px;
+  // Removed overflow: hidden to prevent dropdown clipping
+}
+
+.sample-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #f3f4f6;
+}
+
+.no-img {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  color: #9ca3af;
+  font-size: 0.625rem;
+  border-radius: 8px;
+  text-align: center;
+  padding: 4px;
 }
 
 .actions-cell {

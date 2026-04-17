@@ -1,0 +1,53 @@
+<div class="modal-overlay" (click)="onClose.emit()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ title() }}</h2>
+      <button class="btn-close" (click)="onClose.emit()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="col-name">Nome</label>
+        <input
+          type="text"
+          id="col-name"
+          [(ngModel)]="formData().name"
+          [disabled]="isLoading()"
+          placeholder="Ex: Minha Coleção"
+        />
+      </div>
+      <div class="form-group">
+        <label for="col-category">Categoria</label>
+        <select id="col-category" [(ngModel)]="formData().category_id" [disabled]="isLoading()">
+          <option [value]="0">Selecione uma categoria</option>
+          <option *ngFor="let cat of categories" [ngValue]="cat.id">{{cat.name}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="col-image">Imagem</label>
+        <input
+          type="file"
+          id="col-image"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          [disabled]="isLoading()"
+        />
+        @if (previewUrl()) {
+          <div class="image-preview">
+            <img [src]="previewUrl()" alt="Prévia" />
+          </div>
+        }
+        @if (!newFile() && existingFilename()) {
+          <small class="file-hint">Atual: {{ existingFilename() }}</small>
+        }
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="onClose.emit()" [disabled]="isLoading()">
+        Cancelar
+      </button>
+      <button class="btn-primary" (click)="save()" [disabled]="isLoading()">
+        {{ buttonText() }}
+      </button>
+    </div>
+  </div>
+</div>
