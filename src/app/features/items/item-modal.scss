@@ -1,5 +1,5 @@
 .modal-overlay {
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--overlay-soft);
 }
 
 .modal-content {
@@ -9,14 +9,14 @@
 
 .modal-header {
   padding: 20px 24px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--border-soft);
   display: flex;
   justify-content: space-between;
   align-items: center;
   h2 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #111827;
+    color: var(--text);
     margin: 0;
   }
 }
@@ -25,11 +25,11 @@
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #9ca3af;
+  color: var(--text-faint);
   cursor: pointer;
   line-height: 1;
   &:hover {
-    color: #4b5563;
+    color: var(--text-muted);
   }
 }
 
@@ -47,22 +47,24 @@
   label {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #374151;
+    color: var(--text-muted);
   }
   input {
     padding: 10px 12px;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--border-strong);
     border-radius: 6px;
     font-size: 0.875rem;
     width: 100%;
     box-sizing: border-box;
+    background: var(--input-bg);
+    color: var(--text);
 
     &:focus {
       outline: none;
-      border-color: #333;
+      border-color: var(--input-focus);
     }
     &:disabled {
-      background: #f9fafb;
+      background: var(--input-disabled-bg);
       cursor: not-allowed;
     }
   }
@@ -70,7 +72,7 @@
 
 .modal-footer {
   padding: 16px 24px;
-  background: #f9fafb;
+  background: var(--surface-muted);
   display: flex;
   justify-content: flex-end;
   gap: 12px;
@@ -85,12 +87,12 @@
     max-width: 100%;
     max-height: 180px;
     border-radius: 6px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border);
     object-fit: cover;
   }
 }
 
 .file-hint {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-subtle);
 }

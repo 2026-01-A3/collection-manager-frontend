@@ -1,9 +1,117 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* ============================================================
+   Design tokens (light default + dark override)
+   ============================================================ */
+:root {
+  --bg: #f4f4f4;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --surface-muted: #f9fafb;
+  --surface-hover: #f3f4f6;
+  --surface-subtle: #fcfcfc;
+
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+  --border-soft: #eeeeee;
+
+  --text: #111827;
+  --text-strong: #1a1a1a;
+  --text-muted: #4b5563;
+  --text-subtle: #6b7280;
+  --text-faint: #9ca3af;
+
+  --primary: #111827;
+  --primary-hover: #374151;
+  --on-primary: #ffffff;
+
+  --accent: #8b5cf6;
+  --accent-2: #6366f1;
+
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --danger-soft-bg: #fef2f2;
+  --danger-soft-border: #fee2e2;
+  --danger-text-bg: #f8d7da;
+
+  --success: #059669;
+  --success-soft-bg: #d4edda;
+  --success-text: #155724;
+
+  --input-bg: #ffffff;
+  --input-disabled-bg: #f9fafb;
+  --input-focus: #333333;
+
+  --overlay: rgba(0, 0, 0, 0.5);
+  --overlay-soft: rgba(0, 0, 0, 0.4);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  --header-bg-start: #111827;
+  --header-bg-end: #1f2937;
+  --header-text: #f9fafb;
+  --header-text-muted: #d1d5db;
+  --header-divider: #374151;
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --bg: #0b1220;
+  --surface: #111827;
+  --surface-elevated: #1f2937;
+  --surface-muted: #0f172a;
+  --surface-hover: #1f2937;
+  --surface-subtle: #131a2a;
+
+  --border: #334155;
+  --border-strong: #475569;
+  --border-soft: #1f2937;
+
+  --text: #f1f5f9;
+  --text-strong: #f8fafc;
+  --text-muted: #cbd5e1;
+  --text-subtle: #94a3b8;
+  --text-faint: #64748b;
+
+  --primary: #8b5cf6;
+  --primary-hover: #7c3aed;
+  --on-primary: #ffffff;
+
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --danger-soft-bg: rgba(220, 38, 38, 0.15);
+  --danger-soft-border: rgba(220, 38, 38, 0.35);
+  --danger-text-bg: rgba(220, 38, 38, 0.2);
+
+  --success: #10b981;
+  --success-soft-bg: rgba(16, 185, 129, 0.18);
+  --success-text: #6ee7b7;
+
+  --input-bg: #0f172a;
+  --input-disabled-bg: #1e293b;
+  --input-focus: #8b5cf6;
+
+  --overlay: rgba(0, 0, 0, 0.65);
+  --overlay-soft: rgba(0, 0, 0, 0.55);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.55), 0 4px 6px -2px rgba(0, 0, 0, 0.35);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+
+  color-scheme: dark;
+}
+
 body {
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* ============================================================
@@ -26,8 +134,7 @@ body {
 }
 
 /* ============================================================
-   Base de modais (usada por alert, confirmation, collection e
-   category-edit). Variações específicas ficam em cada arquivo.
+   Base de modais
    ============================================================ */
 .modal-overlay {
   position: fixed;
@@ -36,23 +143,23 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay);
   backdrop-filter: blur(4px);
   animation: fadeIn 0.2s ease-out;
 }
 
 .modal-content {
-  background: #fff;
+  background: var(--surface-elevated);
+  color: var(--text);
   width: 90%;
   max-width: 400px;
   border-radius: 12px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-xl);
   animation: slideUp 0.3s ease-out;
 }
 
 /* ============================================================
-   Dropdown (idêntico em categories e collections)
+   Dropdown
    ============================================================ */
 .dropdown {
   position: relative;
@@ -60,18 +167,18 @@ body {
 }
 
 .btn-dropdown {
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 0.875rem;
-  color: #333;
+  color: var(--text);
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover:not(:disabled) {
-    background-color: #eeeeee;
-    border-color: #d0d0d0;
+    background-color: var(--surface-hover);
+    border-color: var(--border-strong);
   }
 }
 
@@ -80,13 +187,12 @@ body {
   right: 0;
   top: 100%;
   z-index: 100;
-  background: white;
+  background: var(--surface-elevated);
   min-width: 120px;
   margin-top: 4px;
   border-radius: 8px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-              0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
   padding: 4px;
   display: flex;
   flex-direction: column;
@@ -97,20 +203,20 @@ body {
     padding: 8px 12px;
     text-align: left;
     font-size: 0.875rem;
-    color: #374151;
+    color: var(--text-muted);
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: #f3f4f6;
+      background-color: var(--surface-hover);
     }
 
     &.delete {
-      color: #dc2626;
+      color: var(--danger);
 
       &:hover {
-        background-color: #fef2f2;
+        background-color: var(--danger-soft-bg);
       }
     }
   }
@@ -126,11 +232,11 @@ body {
     h1 {
       margin: 0 0 4px;
       font-size: 1.5rem;
-      color: #1a1a1a;
+      color: var(--text-strong);
       font-weight: 700;
     }
     p {
-      color: #666;
+      color: var(--text-subtle);
       margin: 0;
       font-size: 0.95rem;
     }
@@ -144,16 +250,16 @@ table {
   th, td {
     padding: 16px;
     text-align: center;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-soft);
     white-space: nowrap;
-    color: #374151;
+    color: var(--text-muted);
     font-size: 0.875rem;
   }
 
   th {
-    background-color: #fafafa;
+    background-color: var(--surface-muted);
     font-weight: 600;
-    color: #666;
+    color: var(--text-subtle);
     font-size: 0.875rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -167,14 +273,14 @@ table {
     }
 
     &:hover {
-      background-color: #fcfcfc;
+      background-color: var(--surface-subtle);
     }
   }
 }
 
 .btn-primary {
-  background: #111827;
-  color: white;
+  background: var(--primary);
+  color: var(--on-primary);
   padding: 8px 16px;
   border-radius: 6px;
   border: none;
@@ -182,7 +288,7 @@ table {
   cursor: pointer;
   transition: all 0.2s;
   &:hover:not(:disabled) {
-    background: #374151;
+    background: var(--primary-hover);
   }
   &:disabled {
     opacity: 0.5;
@@ -191,15 +297,15 @@ table {
 }
 
 .btn-secondary {
-  background: white;
-  border: 1px solid #d1d5db;
-  color: #374151;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
   padding: 8px 16px;
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   &:hover:not(:disabled) {
-    background: #f3f4f6;
+    background: var(--surface-hover);
   }
 }

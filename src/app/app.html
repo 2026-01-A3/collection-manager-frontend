@@ -1,6 +1,20 @@
 <main class="app-shell">
   <header>
-    <h1>{{ title() }}</h1>
+    <a routerLink="/" class="brand" aria-label="Acervo">
+      <svg class="brand-logo" viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="brand-g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#6366f1"/>
+            <stop offset="1" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <rect x="4" y="4" width="56" height="56" rx="12" fill="url(#brand-g)"/>
+        <rect x="16" y="40" width="32" height="6" rx="2" fill="#ffffff" opacity="0.55"/>
+        <rect x="14" y="30" width="36" height="6" rx="2" fill="#ffffff" opacity="0.8"/>
+        <rect x="12" y="16" width="40" height="10" rx="3" fill="#ffffff"/>
+      </svg>
+      <h1>{{ title() }}</h1>
+    </a>
     <nav>
       @if (currentUser()) {
         <a routerLink="/categories" routerLinkActive="active">Categorias</a>
@@ -8,6 +22,26 @@
         @if (currentUser()?.role === 'ADMIN') {
           <a routerLink="/register" routerLinkActive="active">Registrar Usuário</a>
         }
+      }
+      <button
+        type="button"
+        class="theme-toggle"
+        (click)="toggleTheme()"
+        [attr.aria-label]="theme() === 'dark' ? 'Mudar para tema claro' : 'Mudar para tema escuro'"
+        [title]="theme() === 'dark' ? 'Tema claro' : 'Tema escuro'"
+      >
+        @if (theme() === 'dark') {
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+          </svg>
+        } @else {
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        }
+      </button>
+      @if (currentUser()) {
         <div class="user-info">
           <span>Olá, {{ currentUser()?.name }}</span>
           <button (click)="logout()" class="btn-logout">Sair</button>
