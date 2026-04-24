@@ -38,6 +38,7 @@
                 </button>
                 @if (openDropdownId() === collection.id) {
                   <div class="dropdown-menu">
+                    <button (click)="openItems(collection)">Itens</button>
                     <button (click)="openEditModal(collection)">Editar</button>
                     <button (click)="deleteCollection(collection.id)" class="delete">Deletar</button>
                   </div>

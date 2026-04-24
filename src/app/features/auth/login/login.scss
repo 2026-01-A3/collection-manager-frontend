@@ -1,4 +1,4 @@
-﻿.auth-container {
+.auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,17 +6,19 @@
 }
 
 .auth-card {
-  background: white;
+  background: var(--surface);
+  color: var(--text);
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
   width: 100%;
   max-width: 400px;
 
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #333;
+    color: var(--text);
   }
 }
 
@@ -26,26 +28,28 @@
   label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #666;
+    color: var(--text-muted);
   }
 
   input {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-strong);
     border-radius: 4px;
     box-sizing: border-box;
+    background: var(--input-bg);
+    color: var(--text);
 
     &:focus {
       outline: none;
-      border-color: #333;
+      border-color: var(--input-focus);
     }
   }
 }
 
 .error-message {
-  color: #dc3545;
-  background: #f8d7da;
+  color: var(--danger);
+  background: var(--danger-text-bg);
   padding: 0.75rem;
   border-radius: 4px;
   margin-bottom: 1rem;
@@ -53,8 +57,8 @@
 }
 
 .success-message {
-  color: #155724;
-  background: #d4edda;
+  color: var(--success-text);
+  background: var(--success-soft-bg);
   padding: 0.75rem;
   border-radius: 4px;
   margin-bottom: 1rem;
@@ -64,8 +68,8 @@
 button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #333;
-  color: white;
+  background-color: var(--primary);
+  color: var(--on-primary);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -73,11 +77,11 @@ button {
   transition: background-color 0.2s;
 
   &:hover:not(:disabled) {
-    background-color: #555;
+    background-color: var(--primary-hover);
   }
 
   &:disabled {
-    background-color: #ccc;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 }
@@ -86,10 +90,10 @@ button {
   margin-top: 1.5rem;
   text-align: center;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-subtle);
 
   a {
-    color: #333;
+    color: var(--accent);
     text-decoration: none;
     font-weight: 600;
     &:hover {

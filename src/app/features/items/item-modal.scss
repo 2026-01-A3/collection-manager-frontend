@@ -1,5 +1,3 @@
-/* .modal-overlay, .modal-content base e animações vêm de styles.scss */
-
 .modal-overlay {
   background: var(--overlay-soft);
 }
@@ -78,4 +76,23 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+}
+
+.image-preview {
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+
+  img {
+    max-width: 100%;
+    max-height: 180px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    object-fit: cover;
+  }
+}
+
+.file-hint {
+  font-size: 0.75rem;
+  color: var(--text-subtle);
 }
