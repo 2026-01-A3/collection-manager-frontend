@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { BinaryObject, Collection } from '../../models/collection.model';
 import { Category } from '../../models/category.model';
@@ -30,7 +31,8 @@ export class CollectionList {
     private collectionService: CollectionService,
     private categoryService: CategoryService,
     private confirmationService: ConfirmationService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private router: Router
   ) {
     this.loadCollections();
     this.loadCategories();
@@ -70,6 +72,11 @@ export class CollectionList {
     this.toggleDropdown(null);
     this.editingCollection.set(collection);
     this.showModal.set(true);
+  }
+
+  openItems(collection: Collection): void {
+    this.toggleDropdown(null);
+    this.router.navigate(['/collections', collection.id, 'items']);
   }
 
   imageSrc(bin: BinaryObject | null | undefined): string | null {
