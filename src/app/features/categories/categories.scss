@@ -1,0 +1,29 @@
+/* .dropdown, .btn-dropdown, .dropdown-menu (base) vêm de styles.scss */
+
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 32px;
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 1;
+  color: var(--text);
+}
+
+.table-container {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.actions-cell {
+  text-align: right;
+  width: 1%;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-faint);
+  padding: 48px !important;
+}

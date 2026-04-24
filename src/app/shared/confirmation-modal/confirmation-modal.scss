@@ -1,0 +1,73 @@
+/* .modal-overlay e .modal-content base vêm de styles.scss */
+
+.modal-content {
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+  animation: modal-fade-in 0.3s ease-out;
+}
+
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  margin-bottom: 16px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text-strong);
+    font-weight: 700;
+  }
+}
+
+.modal-body {
+  margin-bottom: 24px;
+
+  p {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-cancel {
+    background-color: var(--surface-hover);
+    color: var(--text-muted);
+
+    &:hover {
+      background-color: var(--border);
+    }
+  }
+
+  .btn-confirm {
+    background-color: var(--danger);
+    color: white;
+
+    &:hover {
+      background-color: var(--danger-hover);
+    }
+  }
+}

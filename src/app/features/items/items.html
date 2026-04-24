@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="header">
+    <div class="title-group">
+      <a routerLink="/collections" class="back-link">&larr; Voltar para coleções</a>
+      <h1>Itens {{ collection() ? '> ' + collection()!.name : '' }}</h1>
+      <p>Navegue pelos itens desta coleção.</p>
+    </div>
+    <button class="btn-primary" (click)="openAddModal()">Novo Item</button>
+  </div>
+
+  @if (!hasItems() && !isLoading()) {
+    <div class="empty-state">
+      Nenhum item nesta coleção. Clique em "Novo Item" para adicionar.
+    </div>
+  }
+
+  @if (hasItems()) {
+    <div class="carousel">
+      @if (hasMultiple()) {
+        <button class="carousel-nav prev" (click)="prev()" aria-label="Anterior">&#10094;</button>
+      }
+
+      <div class="carousel-track">
+        @for (slide of slides(); track $index; let s = $index) {
+          <div class="carousel-slide" [class.active]="s === currentIndex()">
+            @for (item of slide; track item.id) {
+              <div class="carousel-card">
+                <div class="image-wrapper">
+                  @if (imageSrc(item.binary_object); as src) {
+                    <img [src]="src" [alt]="item.name" />
+                  } @else {
+                    <div class="no-img">Sem imagem</div>
+                  }
+                </div>
+                <div class="card-body">
+                  <h2>{{ item.name }}</h2>
+                  <p class="price">{{ item.price | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
+                  <div class="card-actions">
+                    <button class="btn-secondary" (click)="openEditModal(item)">Editar</button>
+                    <button class="btn-danger" (click)="deleteItem(item)">Deletar</button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      @if (hasMultiple()) {
+        <button class="carousel-nav next" (click)="next()" aria-label="Próximo">&#10095;</button>
+      }
+    </div>
+
+    @if (hasMultiple()) {
+      <div class="carousel-dots">
+        @for (slide of slides(); track $index; let s = $index) {
+          <button
+            class="dot"
+            [class.active]="s === currentIndex()"
+            (click)="goTo(s)"
+            [attr.aria-label]="'Página ' + (s + 1)"
+          ></button>
+        }
+      </div>
+    }
+
+    <div class="carousel-counter">
+      Página {{ currentIndex() + 1 }} / {{ slides().length }}
+    </div>
+  }
+</div>
+
+@if (showModal()) {
+  <app-item-modal
+    [item]="editingItem()"
+    [collectionId]="collectionId()"
+    (onClose)="closeModal()"
+    (onSave)="onItemSaved($event)"
+  ></app-item-modal>
+}

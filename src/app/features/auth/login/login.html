@@ -1,0 +1,43 @@
+﻿<div class="auth-container">
+  <div class="auth-card">
+    <h2>Login</h2>
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="credentials.email"
+          required
+          #email="ngModel"
+          placeholder="seu@email.com"
+        >
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="credentials.password"
+          required
+          #password="ngModel"
+          placeholder="Sua senha"
+        >
+      </div>
+
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <button type="submit" [disabled]="!loginForm.form.valid">Entrar</button>
+    </form>
+
+    <div class="auth-footer">
+      Não tem uma conta? <a routerLink="/register">Registre-se</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="header">
+    <div class="title-group">
+      <h1>Categorias</h1>
+      <p>Gerencie as categorias das suas coleções.</p>
+    </div>
+    <button class="btn-primary" (click)="openAddModal()">
+      Nova Categoria
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>Nome</th>
+        <th class="actions-cell">Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (category of categories(); track category.id) {
+          <tr>
+            <td>{{ category.name }}</td>
+            <td class="actions-cell">
+              <div class="dropdown">
+                <button class="btn-dropdown" (click)="toggleDropdown(category.id!)">
+                  Ações ▾
+                </button>
+                @if (openDropdownId() === category.id) {
+                  <div class="dropdown-menu">
+                    <button (click)="openEditModal(category)">Editar</button>
+                    <button (click)="deleteCategory(category.id!)" class="delete">Excluir</button>
+                  </div>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+        @if (categories().length === 0 && !isLoading()) {
+          <tr>
+            <td colspan="2" class="empty-state">Nenhuma categoria encontrada.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (showModal()) {
+  <app-category-modal
+    [category]="editingCategory()"
+    (onClose)="closeModal()"
+    (onSave)="onCategorySaved($event)"
+  ></app-category-modal>
+}

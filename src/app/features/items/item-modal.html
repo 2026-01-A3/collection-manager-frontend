@@ -1,0 +1,55 @@
+<div class="modal-overlay" (click)="onClose.emit()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ title() }}</h2>
+      <button class="btn-close" (click)="onClose.emit()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="item-name">Nome</label>
+        <input
+          type="text"
+          id="item-name"
+          [(ngModel)]="formData().name"
+          [disabled]="isLoading()"
+          placeholder="Ex: Camiseta Azul"
+        />
+      </div>
+      <div class="form-group">
+        <label for="item-price">Preço (R$)</label>
+        <input
+          type="number"
+          id="item-price"
+          step="0.01"
+          min="0"
+          [(ngModel)]="formData().price"
+          [disabled]="isLoading()"
+          placeholder="0,00"
+        />
+      </div>
+      <div class="form-group">
+        <label for="item-image">Foto</label>
+        <input
+          type="file"
+          id="item-image"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          [disabled]="isLoading()"
+        />
+        @if (previewUrl()) {
+          <div class="image-preview">
+            <img [src]="previewUrl()" alt="Prévia" />
+          </div>
+        }
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="onClose.emit()" [disabled]="isLoading()">
+        Cancelar
+      </button>
+      <button class="btn-primary" (click)="save()" [disabled]="isLoading()">
+        {{ buttonText() }}
+      </button>
+    </div>
+  </div>
+</div>
