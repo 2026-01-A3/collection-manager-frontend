@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -17,7 +17,7 @@ import { AlertService } from '../../services/alert.service';
   templateUrl: './items.html',
   styleUrl: './items.scss',
 })
-export class ItemList {
+export class ItemList implements OnDestroy {
   items = signal<Item[]>([]);
   collection = signal<Collection | null>(null);
   collectionId = signal<number>(0);
@@ -27,13 +27,21 @@ export class ItemList {
   editingItem = signal<Item | null>(null);
   currentIndex = signal(0);
 
-  readonly itemsPerSlide = 3;
+  private mobileMql: MediaQueryList | null =
+    typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+      ? window.matchMedia('(max-width: 768px)')
+      : null;
+  private isMobile = signal<boolean>(this.mobileMql?.matches ?? false);
+  private mqlListener = (e: MediaQueryListEvent) => this.isMobile.set(e.matches);
+
+  itemsPerSlide = computed(() => (this.isMobile() ? 1 : 3));
 
   slides = computed<Item[][]>(() => {
     const list = this.items();
+    const size = this.itemsPerSlide();
     const pages: Item[][] = [];
-    for (let i = 0; i < list.length; i += this.itemsPerSlide) {
-      pages.push(list.slice(i, i + this.itemsPerSlide));
+    for (let i = 0; i < list.length; i += size) {
+      pages.push(list.slice(i, i + size));
     }
     return pages;
   });
@@ -48,6 +56,13 @@ export class ItemList {
     private confirmationService: ConfirmationService,
     private alertService: AlertService
   ) {
+    this.mobileMql?.addEventListener('change', this.mqlListener);
+    effect(() => {
+      const total = this.slides().length;
+      if (this.currentIndex() >= total) {
+        this.currentIndex.set(Math.max(0, total - 1));
+      }
+    });
     const idParam = this.route.snapshot.paramMap.get('collectionId');
     const id = Number(idParam);
     if (!id) {
@@ -133,6 +148,10 @@ export class ItemList {
       this.currentIndex.set(this.slides().length - 1);
     }
     this.closeModal();
+  }
+
+  ngOnDestroy(): void {
+    this.mobileMql?.removeEventListener('change', this.mqlListener);
   }
 
   async deleteItem(item: Item): Promise<void> {
