@@ -20,13 +20,14 @@ export class ItemModal {
     if (val) {
       this.formData.set({
         name: val.name,
+        description: val.description ?? '',
         price: val.price,
       });
       this.itemId = val.id;
       this.previewUrl.set(this.buildDataUrl(val.binary_object));
       this.existingFilename.set(val.binary_object?.filename ?? '');
     } else {
-      this.formData.set({ name: '', price: 0 });
+      this.formData.set({ name: '', description: '', price: 0 });
       this.itemId = null;
       this.previewUrl.set(null);
       this.existingFilename.set('');
@@ -42,7 +43,11 @@ export class ItemModal {
   @Output() onSave = new EventEmitter<Item>();
 
   itemId: number | null = null;
-  formData = signal<{ name: string; price: number }>({ name: '', price: 0 });
+  formData = signal<{ name: string; description: string; price: number }>({
+    name: '',
+    description: '',
+    price: 0,
+  });
   isLoading = signal(false);
 
   newFile = signal<BinaryObjectPayload | null>(null);
@@ -96,7 +101,7 @@ export class ItemModal {
       return;
     }
     if (data.price < 0 || isNaN(Number(data.price))) {
-      this.alertService.error('Preço inválido.');
+      this.alertService.error('Valor inválido.');
       return;
     }
     if (!this.collectionId) {
@@ -106,8 +111,10 @@ export class ItemModal {
 
     this.isLoading.set(true);
 
+    const trimmedDescription = data.description.trim();
     const payload = {
       name: data.name,
+      description: trimmedDescription === '' ? null : trimmedDescription,
       price: Number(data.price),
       collection_id: this.collectionId,
       binary_object: this.newFile(),

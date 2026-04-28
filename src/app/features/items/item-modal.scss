@@ -49,7 +49,8 @@
     font-weight: 500;
     color: var(--text-muted);
   }
-  input {
+  input,
+  textarea {
     padding: 10px 12px;
     border: 1px solid var(--border-strong);
     border-radius: 6px;
@@ -58,6 +59,7 @@
     box-sizing: border-box;
     background: var(--input-bg);
     color: var(--text);
+    font-family: inherit;
 
     &:focus {
       outline: none;
@@ -67,6 +69,10 @@
       background: var(--input-disabled-bg);
       cursor: not-allowed;
     }
+  }
+  textarea {
+    resize: vertical;
+    min-height: 72px;
   }
 }
 

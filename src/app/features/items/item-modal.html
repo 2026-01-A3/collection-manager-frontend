@@ -16,7 +16,17 @@
         />
       </div>
       <div class="form-group">
-        <label for="item-price">Preço (R$)</label>
+        <label for="item-description">Descrição</label>
+        <textarea
+          id="item-description"
+          rows="3"
+          [(ngModel)]="formData().description"
+          [disabled]="isLoading()"
+          placeholder="Detalhes adicionais (opcional)"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="item-price">Valor (R$)</label>
         <input
           type="number"
           id="item-price"
