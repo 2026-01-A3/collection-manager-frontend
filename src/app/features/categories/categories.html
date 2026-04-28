@@ -23,11 +23,15 @@
             <td>{{ category.name }}</td>
             <td class="actions-cell">
               <div class="dropdown">
-                <button class="btn-dropdown" (click)="toggleDropdown(category.id!)">
+                <button class="btn-dropdown" (click)="toggleDropdown(category.id!, $event)">
                   Ações ▾
                 </button>
-                @if (openDropdownId() === category.id) {
-                  <div class="dropdown-menu">
+                @if (openDropdownId() === category.id && dropdownPos(); as pos) {
+                  <div
+                    class="dropdown-menu"
+                    [style.top.px]="pos.top"
+                    [style.left.px]="pos.left"
+                  >
                     <button (click)="openEditModal(category)">Editar</button>
                     <button (click)="deleteCategory(category.id!)" class="delete">Excluir</button>
                   </div>
