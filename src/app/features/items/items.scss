@@ -121,6 +121,23 @@
     overflow: hidden;
   }
 
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .tag-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    line-height: 1.4;
+  }
+
   .price {
     margin: 0;
     color: var(--success);
