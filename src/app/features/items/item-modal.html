@@ -16,7 +16,17 @@
         />
       </div>
       <div class="form-group">
-        <label for="item-price">Preço (R$)</label>
+        <label for="item-description">Descrição</label>
+        <textarea
+          id="item-description"
+          rows="3"
+          [(ngModel)]="formData().description"
+          [disabled]="isLoading()"
+          placeholder="Detalhes adicionais (opcional)"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="item-price">Valor (R$)</label>
         <input
           type="number"
           id="item-price"
@@ -26,6 +36,49 @@
           [disabled]="isLoading()"
           placeholder="0,00"
         />
+      </div>
+      <div class="form-group">
+        <label for="item-tag-input">Tags</label>
+        <div class="tag-input-row">
+          <input
+            type="text"
+            id="item-tag-input"
+            [ngModel]="tagInput()"
+            (ngModelChange)="tagInput.set($event)"
+            (keydown)="onTagKeydown($event)"
+            [disabled]="isLoading()"
+            placeholder="Digite uma tag e pressione Enter"
+          />
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="addTagFromInput()"
+            [disabled]="isLoading() || !tagInput().trim()"
+          >
+            Adicionar
+          </button>
+        </div>
+        @if (tags().length > 0) {
+          <div class="tag-list">
+            @for (tag of tags(); track tag) {
+              <span
+                class="tag-chip"
+                [style.background]="tagStyle(tag).background"
+                [style.color]="tagStyle(tag).color"
+                [style.borderColor]="tagStyle(tag).border"
+              >
+                {{ tag }}
+                <button
+                  type="button"
+                  class="tag-remove"
+                  (click)="removeTag(tag)"
+                  [disabled]="isLoading()"
+                  aria-label="Remover tag"
+                >&times;</button>
+              </span>
+            }
+          </div>
+        }
       </div>
       <div class="form-group">
         <label for="item-image">Foto</label>
