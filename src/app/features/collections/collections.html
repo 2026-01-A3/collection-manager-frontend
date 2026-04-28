@@ -33,11 +33,15 @@
             <td>{{ collection.category?.name || 'Sem categoria' }}</td>
             <td class="actions-cell">
               <div class="dropdown">
-                <button class="btn-dropdown" (click)="toggleDropdown(collection.id)">
+                <button class="btn-dropdown" (click)="toggleDropdown(collection.id, $event)">
                   Ações ▾
                 </button>
-                @if (openDropdownId() === collection.id) {
-                  <div class="dropdown-menu">
+                @if (openDropdownId() === collection.id && dropdownPos(); as pos) {
+                  <div
+                    class="dropdown-menu"
+                    [style.top.px]="pos.top"
+                    [style.left.px]="pos.left"
+                  >
                     <button (click)="openItems(collection)">Itens</button>
                     <button (click)="openEditModal(collection)">Editar</button>
                     <button (click)="deleteCollection(collection.id)" class="delete">Deletar</button>

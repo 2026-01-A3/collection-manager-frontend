@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -21,6 +21,7 @@ export class CategoryList {
   showModal = signal(false);
   editingCategory = signal<Category | null>(null);
   openDropdownId = signal<number | null>(null);
+  dropdownPos = signal<{ top: number; left: number } | null>(null);
 
   constructor(
     private categoryService: CategoryService,
@@ -56,11 +57,40 @@ export class CategoryList {
     this.showModal.set(true);
   }
 
-  toggleDropdown(id: number | null): void {
+  toggleDropdown(id: number | null, event?: MouseEvent): void {
     if (this.openDropdownId() === id) {
       this.openDropdownId.set(null);
+      this.dropdownPos.set(null);
+      return;
+    }
+    if (id !== null && event) {
+      const btn = event.currentTarget as HTMLElement;
+      const rect = btn.getBoundingClientRect();
+      const menuWidth = 140;
+      const left = Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 8);
+      this.dropdownPos.set({ top: rect.bottom + 4, left: Math.max(8, left) });
     } else {
-      this.openDropdownId.set(id);
+      this.dropdownPos.set(null);
+    }
+    this.openDropdownId.set(id);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocClick(event: MouseEvent): void {
+    if (this.openDropdownId() === null) return;
+    const target = event.target as HTMLElement | null;
+    if (!target?.closest('.dropdown')) {
+      this.openDropdownId.set(null);
+      this.dropdownPos.set(null);
+    }
+  }
+
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  onViewportChange(): void {
+    if (this.openDropdownId() !== null) {
+      this.openDropdownId.set(null);
+      this.dropdownPos.set(null);
     }
   }
 

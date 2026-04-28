@@ -1,6 +1,6 @@
-<main class="app-shell">
+<main class="app-shell" [class.drawer-open]="drawerOpen()">
   <header>
-    <a routerLink="/" class="brand" aria-label="Acervo">
+    <a routerLink="/" class="brand" aria-label="Acervo" (click)="closeDrawer()">
       <svg class="brand-logo" viewBox="0 0 64 64" aria-hidden="true">
         <defs>
           <linearGradient id="brand-g" x1="0" y1="0" x2="1" y2="1">
@@ -15,14 +15,8 @@
       </svg>
       <h1>{{ title() }}</h1>
     </a>
-    <nav>
-      @if (currentUser()) {
-        <a routerLink="/categories" routerLinkActive="active">Categorias</a>
-        <a routerLink="/collections" routerLinkActive="active">Coleções</a>
-        @if (currentUser()?.role === 'ADMIN') {
-          <a routerLink="/register" routerLinkActive="active">Registrar Usuário</a>
-        }
-      }
+
+    <div class="header-actions">
       <button
         type="button"
         class="theme-toggle"
@@ -41,15 +35,54 @@
           </svg>
         }
       </button>
+
+      <button
+      type="button"
+      class="menu-toggle"
+      (click)="toggleDrawer()"
+      [attr.aria-expanded]="drawerOpen()"
+      aria-label="Abrir menu"
+      aria-controls="mobile-drawer"
+    >
+      @if (drawerOpen()) {
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      } @else {
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      }
+    </button>
+    </div>
+
+    <nav id="mobile-drawer" [class.open]="drawerOpen()">
+      @if (currentUser()) {
+        <a routerLink="/categories" routerLinkActive="active" (click)="closeDrawer()">Categorias</a>
+        <a routerLink="/collections" routerLinkActive="active" (click)="closeDrawer()">Coleções</a>
+        @if (currentUser()?.role === 'ADMIN') {
+          <a routerLink="/register" routerLinkActive="active" (click)="closeDrawer()">Registrar Usuário</a>
+        }
+      }
       @if (currentUser()) {
         <div class="user-info">
           <span>Olá, {{ currentUser()?.name }}</span>
           <button (click)="logout()" class="btn-logout">Sair</button>
         </div>
       } @else {
-        <a routerLink="/login" routerLinkActive="active">Login</a>
+        <a routerLink="/login" routerLinkActive="active" (click)="closeDrawer()">Login</a>
       }
     </nav>
+
+    <div
+      class="drawer-backdrop"
+      [class.visible]="drawerOpen()"
+      (click)="closeDrawer()"
+      aria-hidden="true"
+    ></div>
   </header>
 
   <section class="page-content">
