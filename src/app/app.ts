@@ -18,6 +18,7 @@ export class App {
   protected readonly title = signal('Acervo');
   currentUser = computed(() => this.authService.currentUser());
   theme = computed(() => this.themeService.theme());
+  drawerOpen = signal(false);
 
   constructor(
     private authService: AuthService,
@@ -28,7 +29,16 @@ export class App {
     this.themeService.toggle();
   }
 
+  toggleDrawer(): void {
+    this.drawerOpen.update((v) => !v);
+  }
+
+  closeDrawer(): void {
+    this.drawerOpen.set(false);
+  }
+
   logout() {
     this.authService.logout();
+    this.closeDrawer();
   }
 }

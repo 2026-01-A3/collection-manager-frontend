@@ -309,3 +309,59 @@ table {
     background: var(--surface-hover);
   }
 }
+
+/* ============================================================
+   Responsive — mobile breakpoints
+   ============================================================ */
+@media (max-width: 768px) {
+  .modal-content {
+    width: calc(100% - 24px);
+    max-width: 100%;
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 20px;
+
+    .title-group h1 {
+      font-size: 1.25rem;
+    }
+    .title-group p {
+      font-size: 0.875rem;
+    }
+  }
+
+  table {
+    th, td {
+      padding: 10px 12px;
+      font-size: 0.8125rem;
+    }
+    th {
+      font-size: 0.75rem;
+    }
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 14px;
+    font-size: 0.875rem;
+  }
+
+  .dropdown-menu {
+    right: 0;
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  table {
+    th, td {
+      padding: 8px 10px;
+      font-size: 0.75rem;
+    }
+  }
+}

@@ -71,3 +71,23 @@
     }
   }
 }
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 18px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.0625rem;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 8px;
+
+    button {
+      width: 100%;
+      padding: 12px;
+    }
+  }
+}
