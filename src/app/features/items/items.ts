@@ -9,6 +9,7 @@ import { CollectionService } from '../../services/collection.service';
 import { ItemModal } from './item-modal';
 import { ConfirmationService } from '../../services/confirmation.service';
 import { AlertService } from '../../services/alert.service';
+import { tagColor } from '../../shared/utils/tag-color';
 
 @Component({
   standalone: true,
@@ -99,6 +100,10 @@ export class ItemList implements OnDestroy {
         this.isLoading.set(false);
       },
     });
+  }
+
+  tagStyle(tag: string) {
+    return tagColor(tag);
   }
 
   imageSrc(bin: BinaryObject | null | undefined): string | null {

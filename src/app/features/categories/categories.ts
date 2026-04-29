@@ -22,6 +22,8 @@ export class CategoryList {
   editingCategory = signal<Category | null>(null);
   openDropdownId = signal<number | null>(null);
   dropdownPos = signal<{ top: number; left: number } | null>(null);
+  searchInput = signal<string>('');
+  appliedSearch = signal<string>('');
 
   constructor(
     private categoryService: CategoryService,
@@ -34,7 +36,7 @@ export class CategoryList {
   loadCategories(): void {
     this.isLoading.set(true);
 
-    this.categoryService.getCategories().subscribe({
+    this.categoryService.getCategories(this.appliedSearch()).subscribe({
       next: (list) => {
         this.categories.set(list);
         this.isLoading.set(false);
@@ -44,6 +46,20 @@ export class CategoryList {
         this.isLoading.set(false);
       },
     });
+  }
+
+  applySearch(): void {
+    const next = this.searchInput().trim();
+    if (next === this.appliedSearch()) return;
+    this.appliedSearch.set(next);
+    this.loadCategories();
+  }
+
+  onSearchKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.applySearch();
+    }
   }
 
   openAddModal(): void {

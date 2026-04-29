@@ -5,6 +5,7 @@ import { BinaryObjectPayload } from '../../models/collection.model';
 import { Item } from '../../models/item.model';
 import { ItemService } from '../../services/item.service';
 import { AlertService } from '../../services/alert.service';
+import { tagColor } from '../../shared/utils/tag-color';
 
 @Component({
   standalone: true,
@@ -20,17 +21,21 @@ export class ItemModal {
     if (val) {
       this.formData.set({
         name: val.name,
+        description: val.description ?? '',
         price: val.price,
       });
+      this.tags.set([...(val.tags ?? [])]);
       this.itemId = val.id;
       this.previewUrl.set(this.buildDataUrl(val.binary_object));
       this.existingFilename.set(val.binary_object?.filename ?? '');
     } else {
-      this.formData.set({ name: '', price: 0 });
+      this.formData.set({ name: '', description: '', price: 0 });
+      this.tags.set([]);
       this.itemId = null;
       this.previewUrl.set(null);
       this.existingFilename.set('');
     }
+    this.tagInput.set('');
     this.newFile.set(null);
   }
   get item(): Item | null {
@@ -42,8 +47,42 @@ export class ItemModal {
   @Output() onSave = new EventEmitter<Item>();
 
   itemId: number | null = null;
-  formData = signal<{ name: string; price: number }>({ name: '', price: 0 });
+  formData = signal<{ name: string; description: string; price: number }>({
+    name: '',
+    description: '',
+    price: 0,
+  });
+  tags = signal<string[]>([]);
+  tagInput = signal<string>('');
   isLoading = signal(false);
+
+  tagStyle = (tag: string) => tagColor(tag);
+
+  addTagFromInput(event?: Event): void {
+    if (event) event.preventDefault();
+    const raw = this.tagInput().trim();
+    if (!raw) return;
+    const parts = raw.split(',').map((p) => p.trim()).filter(Boolean);
+    this.tags.update((current) => {
+      const next = [...current];
+      for (const p of parts) {
+        if (!next.includes(p)) next.push(p);
+      }
+      return next;
+    });
+    this.tagInput.set('');
+  }
+
+  removeTag(tag: string): void {
+    this.tags.update((current) => current.filter((t) => t !== tag));
+  }
+
+  onTagKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' || event.key === ',') {
+      event.preventDefault();
+      this.addTagFromInput();
+    }
+  }
 
   newFile = signal<BinaryObjectPayload | null>(null);
   previewUrl = signal<string | null>(null);
@@ -96,7 +135,7 @@ export class ItemModal {
       return;
     }
     if (data.price < 0 || isNaN(Number(data.price))) {
-      this.alertService.error('Preço inválido.');
+      this.alertService.error('Valor inválido.');
       return;
     }
     if (!this.collectionId) {
@@ -106,8 +145,12 @@ export class ItemModal {
 
     this.isLoading.set(true);
 
+    const trimmedDescription = data.description.trim();
+    const tagsToSend = this.tags();
     const payload = {
       name: data.name,
+      description: trimmedDescription === '' ? null : trimmedDescription,
+      tags: tagsToSend.length === 0 ? null : tagsToSend,
       price: Number(data.price),
       collection_id: this.collectionId,
       binary_object: this.newFile(),

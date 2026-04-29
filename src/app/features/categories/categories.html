@@ -9,6 +9,23 @@
     </button>
   </div>
 
+  <div class="search-bar">
+    <input
+      type="search"
+      [ngModel]="searchInput()"
+      (ngModelChange)="searchInput.set($event)"
+      (keydown)="onSearchKeydown($event)"
+      placeholder="Buscar por nome..."
+      aria-label="Buscar categorias por nome"
+    />
+    <button
+      type="button"
+      class="btn-primary"
+      (click)="applySearch()"
+      [disabled]="isLoading()"
+    >Buscar</button>
+  </div>
+
   <div class="table-container">
     <table>
       <thead>
@@ -42,12 +59,22 @@
         }
         @if (categories().length === 0 && !isLoading()) {
           <tr>
-            <td colspan="2" class="empty-state">Nenhuma categoria encontrada.</td>
+            <td colspan="2" class="empty-state">
+              @if (appliedSearch()) {
+                Nenhuma categoria corresponde à busca.
+              } @else {
+                Nenhuma categoria encontrada.
+              }
+            </td>
           </tr>
         }
       </tbody>
     </table>
   </div>
+
+  <p class="list-total">
+    Total: {{ categories().length }}
+  </p>
 </div>
 
 @if (showModal()) {

@@ -27,6 +27,8 @@ export class CollectionList {
   editingCollection = signal<Collection | null>(null);
   openDropdownId = signal<number | null>(null);
   dropdownPos = signal<{ top: number; left: number } | null>(null);
+  searchInput = signal<string>('');
+  appliedSearch = signal<string>('');
 
   constructor(
     private collectionService: CollectionService,
@@ -41,7 +43,7 @@ export class CollectionList {
 
   loadCollections(): void {
     this.isLoading.set(true);
-    this.collectionService.getCollections().subscribe({
+    this.collectionService.getCollections(this.appliedSearch()).subscribe({
       next: (list) => {
         this.collections.set(list);
         this.isLoading.set(false);
@@ -51,6 +53,20 @@ export class CollectionList {
         this.isLoading.set(false);
       },
     });
+  }
+
+  applySearch(): void {
+    const next = this.searchInput().trim();
+    if (next === this.appliedSearch()) return;
+    this.appliedSearch.set(next);
+    this.loadCollections();
+  }
+
+  onSearchKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.applySearch();
+    }
   }
 
   loadCategories(): void {

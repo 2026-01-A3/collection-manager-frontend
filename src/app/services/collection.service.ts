@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Collection, CreateCollectionRequest, UpdateCollectionRequest } from '../models/collection.model';
@@ -12,8 +12,11 @@ export class CollectionService {
 
   constructor(private http: HttpClient) { }
 
-  getCollections(): Observable<Collection[]> {
-    return this.http.get<Collection[]>(`${this.API_BASE}/collections`);
+  getCollections(search?: string): Observable<Collection[]> {
+    let params = new HttpParams();
+    const trimmed = (search ?? '').trim();
+    if (trimmed) params = params.set('search', trimmed);
+    return this.http.get<Collection[]>(`${this.API_BASE}/collections`, { params });
   }
 
   addCollection(collection: CreateCollectionRequest): Observable<Collection> {
