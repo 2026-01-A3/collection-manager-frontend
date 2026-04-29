@@ -62,13 +62,6 @@ export class CollectionList {
     this.loadCollections();
   }
 
-  clearSearch(): void {
-    if (this.searchInput() === '' && this.appliedSearch() === '') return;
-    this.searchInput.set('');
-    this.appliedSearch.set('');
-    this.loadCollections();
-  }
-
   onSearchKeydown(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
       event.preventDefault();

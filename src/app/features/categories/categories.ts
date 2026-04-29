@@ -55,13 +55,6 @@ export class CategoryList {
     this.loadCategories();
   }
 
-  clearSearch(): void {
-    if (this.searchInput() === '' && this.appliedSearch() === '') return;
-    this.searchInput.set('');
-    this.appliedSearch.set('');
-    this.loadCategories();
-  }
-
   onSearchKeydown(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
       event.preventDefault();

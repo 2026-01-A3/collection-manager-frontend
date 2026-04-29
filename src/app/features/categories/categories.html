@@ -24,14 +24,6 @@
       (click)="applySearch()"
       [disabled]="isLoading()"
     >Buscar</button>
-    @if (appliedSearch()) {
-      <button
-        type="button"
-        class="btn-secondary"
-        (click)="clearSearch()"
-        [disabled]="isLoading()"
-      >Limpar</button>
-    }
   </div>
 
   <div class="table-container">
