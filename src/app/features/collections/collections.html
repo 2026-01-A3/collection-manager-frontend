@@ -9,6 +9,31 @@
     </button>
   </div>
 
+  <div class="search-bar">
+    <input
+      type="search"
+      [ngModel]="searchInput()"
+      (ngModelChange)="searchInput.set($event)"
+      (keydown)="onSearchKeydown($event)"
+      placeholder="Buscar por nome..."
+      aria-label="Buscar coleções por nome"
+    />
+    <button
+      type="button"
+      class="btn-primary"
+      (click)="applySearch()"
+      [disabled]="isLoading()"
+    >Buscar</button>
+    @if (appliedSearch()) {
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="clearSearch()"
+        [disabled]="isLoading()"
+      >Limpar</button>
+    }
+  </div>
+
   <div class="table-container">
     <table>
       <thead>
@@ -53,7 +78,13 @@
         }
         @if (collections().length === 0 && !isLoading()) {
           <tr>
-            <td colspan="4" class="empty-state">Nenhuma coleção encontrada.</td>
+            <td colspan="4" class="empty-state">
+              @if (appliedSearch()) {
+                Nenhuma coleção corresponde à busca.
+              } @else {
+                Nenhuma coleção encontrada.
+              }
+            </td>
           </tr>
         }
       </tbody>
